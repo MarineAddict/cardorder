@@ -45,11 +45,11 @@ public class JsonResponse<T> {
         this.data=data;
     }
 
-    public static<T> JsonResponse SUCCESS(String msg,T data){
+    public static <T> JsonResponse success(String msg,T data){
         return new JsonResponse<T>("200",msg,data);
     }
 
-    public static<T> JsonResponse FAIL(String code,String msg){
+    public static <T> JsonResponse fail(String code,String msg){
         return new JsonResponse<T>(code,msg,null);
     }
 

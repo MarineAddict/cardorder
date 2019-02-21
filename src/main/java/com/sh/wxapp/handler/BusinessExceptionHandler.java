@@ -19,6 +19,6 @@ public class BusinessExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public JsonResponse buzExceptionHandler(BusinessException be){
-        return JsonResponse.FAIL(be.getCode(),be.getMessage());
+        return JsonResponse.fail(be.getCode(),be.getMessage());
     }
 }
