@@ -2,6 +2,7 @@ package com.sh.wxapp.enm;
 
 /*业务异常*/
 public enum BusinessExceptionCode {
+    NORMAL("201","内部异常"),
     PARAMETER_NULL("001","请求参数为空"),
     NO_RESULT_FOUND("100","找不到数据");
 
