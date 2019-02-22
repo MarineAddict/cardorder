@@ -29,9 +29,9 @@ public class TokenUtils {
     public static final int TOKEN_PASS = 1;
     public static final int TOKEN_FAIL = 0;
     //过期
-    public static final int TOKE_EXPIRE = 2;
-    //token有效时间
-    public static final long TOKEN_VALID_TIME = 10;
+    public static final long TOKE_EXPIRE = 2;
+    //token过期更新时间
+    public static final long TOKEN_VALID_TIME = 5*60*1000;//5分钟
 
     /*生成token*/
     public static String createToken(Map<String, Object> payLoad) {
@@ -45,6 +45,7 @@ public class TokenUtils {
          */
         try {
             JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+
             //建立一个载荷Payload
             Payload payload = new Payload(new JSONObject(payLoad));
             //将头部和载荷结合在一起
@@ -97,22 +98,4 @@ public class TokenUtils {
             throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), je.getMessage());
         }
     }
-
-    /*验证token*/
-    public static Map<String, Object> validToken(String token) {
-        Map<String, Object> tokenMap = parseToken(token);
-        if(tokenMap.containsKey(RESULT)){
-            //取得结果
-            Integer result= (Integer) tokenMap.get(RESULT);
-            if(TOKEN_PASS==result){
-
-            }else if(TOKEN_FAIL==result){
-
-            }else if(TOKE_EXPIRE==result){
-
-            }
-        }
-        return null;
-    }
-
 }
