@@ -19,7 +19,13 @@
     from account_info
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="selectByUsernamePassWord" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from account_info
+      where username=#{username} and password=#{password}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from account_info
     where id = #{id,jdbcType=BIGINT}
   </delete>

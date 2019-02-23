@@ -11,6 +11,8 @@ public interface UserInfoMapper {
 
     UserInfo selectByPrimaryKey(Long id);
 
+    UserInfo selectByUserId(Long userId);
+
     int updateByPrimaryKeySelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);

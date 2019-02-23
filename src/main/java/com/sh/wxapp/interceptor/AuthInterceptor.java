@@ -57,6 +57,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         } else {
             //无token
+            //1.查验身份
             JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCode.TOKEN_ERROR.getCode(),"验证失败");
             response.getWriter().write(JSONObject.toJSONString(jsonResponse));
             return false;

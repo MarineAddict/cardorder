@@ -21,7 +21,7 @@ import java.util.Map;
 public class TokenUtils {
 
     /*密钥*/
-    private static final byte[] secret = "hellomynameisshaohui".getBytes();
+    private static final byte[] secret = "hellomynameisshaohuiilovemycatanddogs".getBytes();
     public static final String EXPIRETIME = "exp";
     public static final String DATA = "data";
     public static final String USERID = "userId";
