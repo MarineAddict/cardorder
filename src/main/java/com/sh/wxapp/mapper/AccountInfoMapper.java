@@ -14,6 +14,8 @@ public interface AccountInfoMapper {
 
     AccountInfo selectByUsernamePassWord(@Param("username") String username, @Param("password")String password);
 
+    AccountInfo selectByUsername(String username);
+
     int updateByPrimaryKeySelective(AccountInfo record);
 
     int updateByPrimaryKey(AccountInfo record);

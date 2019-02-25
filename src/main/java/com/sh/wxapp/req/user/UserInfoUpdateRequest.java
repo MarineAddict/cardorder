@@ -1,16 +1,15 @@
-package com.sh.wxapp.dto;
+package com.sh.wxapp.req.user;
 
-import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
 
 /**
- * UserInfoDTO
- *
- * @author xuqie
- * @version 1.0.0
+ * @program: carorder
+ * @description:
+ * @author: xuqie
+ * @create: 2019-02-25 14:14
  **/
-
-public class UserInfoDTO implements Serializable {
-
+@ApiModel("账户信息更新")
+public class UserInfoUpdateRequest {
     private Long userId;
 
     private String name;

@@ -8,7 +8,8 @@ import javax.swing.text.Position;
 public enum PostionEnum {
 
     TAKER(1,"接单人"),
-    ISSUER(2,"发单人");
+    ISSUER(2,"发单人"),
+    VISITOR(3,"游客");
 
     private Integer code;
     private String value;
