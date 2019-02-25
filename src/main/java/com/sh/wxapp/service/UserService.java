@@ -14,5 +14,6 @@ public interface UserService {
     /*账号密码获得用户*/
     UserInfoDTO getUser(String username,String password);
 
+    /*账号密码注册*/
 
 }

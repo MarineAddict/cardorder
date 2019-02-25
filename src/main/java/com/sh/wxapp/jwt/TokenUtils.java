@@ -30,8 +30,10 @@ public class TokenUtils {
     public static final int TOKEN_FAIL = 0;
     //过期
     public static final long TOKE_EXPIRE = 2;
-    //token过期更新时间
-    public static final long TOKEN_VALID_TIME = 5*60*1000;//5分钟
+    //token更新时间
+    public static final long TOKEN_REFRESH_TIME = 5*60*1000;//5分钟
+    //token有效时间
+    public static final long TOKEN_VALID_TIME=10*60*1000;//10分钟
 
     /*生成token*/
     public static String createToken(Map<String, Object> payLoad) {

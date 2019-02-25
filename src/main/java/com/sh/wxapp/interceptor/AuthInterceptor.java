@@ -2,9 +2,7 @@ package com.sh.wxapp.interceptor;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.sh.wxapp.enm.BusinessExceptionCode;
-import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.jwt.TokenUtils;
 import com.sh.wxapp.rop.JsonResponse;
 import org.springframework.stereotype.Component;
@@ -37,10 +35,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (result.get(TokenUtils.RESULT).equals(TokenUtils.TOKEN_PASS)) {
                 //通过,验证时间是否发新token
                 if (result.get(TokenUtils.EXPIRETIME) != null) {
+                    response.setHeader("token", token);
                     Long expDate = Long.valueOf(result.get(TokenUtils.EXPIRETIME).toString());
                     Long now = new Date().getTime();
                     //过期时间小于有效的时间
-                    if (expDate - now <= TokenUtils.TOKEN_VALID_TIME) {
+                    if (expDate - now <= TokenUtils.TOKEN_REFRESH_TIME) {
                         Object userId = result.get(TokenUtils.USERID);
                         Map map = new HashMap();
                         map.put(TokenUtils.USERID, userId);
