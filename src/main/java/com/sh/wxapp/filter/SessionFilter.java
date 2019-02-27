@@ -20,11 +20,12 @@ public class SessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req= (HttpServletRequest) request;
-        UserInfoDTO userInfoDTO= (UserInfoDTO) req.getSession().getAttribute("userInfo");
-        if(userInfoDTO!=null){
-            req.getSession().setAttribute("userInfo",userInfoDTO);
+        HttpServletRequest req = (HttpServletRequest) request;
+        UserInfoDTO userInfoDTO = (UserInfoDTO) req.getSession().getAttribute("userInfo");
+        if (userInfoDTO != null) {
+            req.getSession().setAttribute("userInfo", userInfoDTO);
         }
+        chain.doFilter(request, response);
     }
 
     @Override

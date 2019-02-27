@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,8 @@ public class CarServiceImp implements CarService {
         });
     }
 
+
+
     /*移除车辆信息*/
     @Transactional(rollbackFor = Exception.class)
     public void removeCar(List<Long> carInfoIds) {
@@ -53,6 +56,20 @@ public class CarServiceImp implements CarService {
         carInfoIds.forEach(id -> {
             carInfoMapper.deleteByPrimaryKey(id);
         });
+    }
+
+    @Override
+    public List<CarUpdateDTO> getCar(Long userId) {
+       List<CarUpdateDTO> cars=new ArrayList<>();
+        Optional.ofNullable(carInfoMapper.selectByUserId(userId))
+                .ifPresent(carInfos -> {
+                    carInfos.forEach(carInfo -> {
+                        CarUpdateDTO carUpdateDTO=new CarUpdateDTO();
+                        BeanUtils.copyProperties(carInfo,carUpdateDTO);
+                        cars.add(carUpdateDTO);
+                    });
+                });
+        return cars;
     }
 
 

@@ -1,11 +1,14 @@
 package com.sh.wxapp.req.car;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * @program: carorder
  * @description:
  * @author: xuqie
  * @create: 2019-02-25 19:10
  **/
+@ApiModel
 public class CarAddRequest {
 
     private Integer type;
