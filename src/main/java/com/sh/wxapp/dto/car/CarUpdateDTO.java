@@ -1,5 +1,8 @@
 package com.sh.wxapp.dto.car;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -18,6 +21,7 @@ public class CarUpdateDTO {
 
     private String carBrand;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 
     public Long getId() {

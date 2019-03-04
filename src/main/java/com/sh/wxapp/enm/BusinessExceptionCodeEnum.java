@@ -1,7 +1,7 @@
 package com.sh.wxapp.enm;
 
 /*业务异常*/
-public enum BusinessExceptionCode {
+public enum BusinessExceptionCodeEnum {
     NORMAL("001","内部异常"),
     PARAMETER_NULL("101","请求参数为空"),
     NO_RESULT_FOUND("201","找不到数据"),
@@ -12,7 +12,7 @@ public enum BusinessExceptionCode {
     TOKEN_ERROR("302","令牌验证失效");
 
 
-    BusinessExceptionCode(String code, String msg) {
+    BusinessExceptionCodeEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

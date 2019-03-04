@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sh.wxapp.mapper.OrderDetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sh.wxapp.domain.OrderDetailInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="passenger_name" property="passengerName" jdbcType="VARCHAR" />
+    <result column="passenger_total" property="passengerTotal" jdbcType="INTEGER" />
+    <result column="luggage_total" property="luggageTotal" jdbcType="INTEGER" />
+    <result column="departure" property="departure" jdbcType="VARCHAR" />
+    <result column="destination" property="destination" jdbcType="VARCHAR" />
+    <result column="flight_no" property="flightNo" jdbcType="VARCHAR" />
+    <result column="passenger_contact" property="passengerContact" jdbcType="VARCHAR" />
+    <result column="passenger_wechat" property="passengerWechat" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, time, passenger_name, passenger_total, luggage_total, departure, destination, 
+    flight_no, passenger_contact, passenger_wechat
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+      select
+      <include refid="Base_Column_List" />
+      from order_detail_info
+      where order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from order_detail_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sh.wxapp.domain.OrderDetailInfo" >
+    insert into order_detail_info (id, order_id, time, 
+      passenger_name, passenger_total, luggage_total, 
+      departure, destination, flight_no, 
+      passenger_contact, passenger_wechat)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{time,jdbcType=VARCHAR}, 
+      #{passengerName,jdbcType=VARCHAR}, #{passengerTotal,jdbcType=INTEGER}, #{luggageTotal,jdbcType=INTEGER}, 
+      #{departure,jdbcType=VARCHAR}, #{destination,jdbcType=VARCHAR}, #{flightNo,jdbcType=VARCHAR}, 
+      #{passengerContact,jdbcType=VARCHAR}, #{passengerWechat,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sh.wxapp.domain.OrderDetailInfo" >
+    insert into order_detail_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="passengerName != null" >
+        passenger_name,
+      </if>
+      <if test="passengerTotal != null" >
+        passenger_total,
+      </if>
+      <if test="luggageTotal != null" >
+        luggage_total,
+      </if>
+      <if test="departure != null" >
+        departure,
+      </if>
+      <if test="destination != null" >
+        destination,
+      </if>
+      <if test="flightNo != null" >
+        flight_no,
+      </if>
+      <if test="passengerContact != null" >
+        passenger_contact,
+      </if>
+      <if test="passengerWechat != null" >
+        passenger_wechat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerName != null" >
+        #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerTotal != null" >
+        #{passengerTotal,jdbcType=INTEGER},
+      </if>
+      <if test="luggageTotal != null" >
+        #{luggageTotal,jdbcType=INTEGER},
+      </if>
+      <if test="departure != null" >
+        #{departure,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null" >
+        #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="flightNo != null" >
+        #{flightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerContact != null" >
+        #{passengerContact,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerWechat != null" >
+        #{passengerWechat,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sh.wxapp.domain.OrderDetailInfo" >
+    update order_detail_info
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerName != null" >
+        passenger_name = #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerTotal != null" >
+        passenger_total = #{passengerTotal,jdbcType=INTEGER},
+      </if>
+      <if test="luggageTotal != null" >
+        luggage_total = #{luggageTotal,jdbcType=INTEGER},
+      </if>
+      <if test="departure != null" >
+        departure = #{departure,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null" >
+        destination = #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="flightNo != null" >
+        flight_no = #{flightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerContact != null" >
+        passenger_contact = #{passengerContact,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerWechat != null" >
+        passenger_wechat = #{passengerWechat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sh.wxapp.domain.OrderDetailInfo" >
+    update order_detail_info
+    set order_id = #{orderId,jdbcType=BIGINT},
+      time = #{time,jdbcType=VARCHAR},
+      passenger_name = #{passengerName,jdbcType=VARCHAR},
+      passenger_total = #{passengerTotal,jdbcType=INTEGER},
+      luggage_total = #{luggageTotal,jdbcType=INTEGER},
+      departure = #{departure,jdbcType=VARCHAR},
+      destination = #{destination,jdbcType=VARCHAR},
+      flight_no = #{flightNo,jdbcType=VARCHAR},
+      passenger_contact = #{passengerContact,jdbcType=VARCHAR},
+      passenger_wechat = #{passengerWechat,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -3,7 +3,7 @@ package com.sh.wxapp.serviceimp.user;
 import com.sh.wxapp.domain.AccountInfo;
 import com.sh.wxapp.domain.UserInfo;
 import com.sh.wxapp.dto.user.UserInfoDTO;
-import com.sh.wxapp.enm.BusinessExceptionCode;
+import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.enm.PostionEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.AccountInfoMapper;
@@ -39,7 +39,7 @@ public class UserServiceImp implements UserService {
 
     public UserInfoDTO getUser(String username, String password) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(username)) {
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(), "请输入账户名和密码");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "请输入账户名和密码");
         }
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         AccountInfo accountInfo = null;
@@ -50,7 +50,7 @@ public class UserServiceImp implements UserService {
                     });
             return userInfoDTO;
         } else {
-            throw new BusinessException(BusinessExceptionCode.NO_RESULT_FOUND.getCode(), "用户不存在");
+            throw new BusinessException(BusinessExceptionCodeEnum.NO_RESULT_FOUND.getCode(), "用户不存在");
         }
     }
 
@@ -58,14 +58,14 @@ public class UserServiceImp implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public Long register(String userName, String password) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userName)) {
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(), "账户或密码不能为空");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "账户或密码不能为空");
         }
         if (StringUtils.isEmpty(userName.trim()) || StringUtils.isEmpty(userName.trim())) {
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(), "账户或密码不能为空");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "账户或密码不能为空");
         }
         //查看账户是否已存在
         if (accountInfoMapper.selectByUsername(userName) != null) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), "账户已存在");
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), "账户已存在");
         }
         //新添加账户
         AccountInfo accountInfo = new AccountInfo();
@@ -74,7 +74,7 @@ public class UserServiceImp implements UserService {
         accountInfoMapper.insertSelective(accountInfo);
         Long userId=null;
         if ((userId=accountInfo.getId()) == null) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), "添加账户失败");
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), "添加账户失败");
         }
         //添加默认账户名
         UserInfo userInfo=new UserInfo();
@@ -88,7 +88,7 @@ public class UserServiceImp implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void updateUserInfo(Long userId,UserInfoDTO userInfoDTO){
         if(userId==null){
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(),"userId为空");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(),"userId为空");
         }
         UserInfo userInfo=new UserInfo();
         BeanUtils.copyProperties(userInfoDTO,userInfo);

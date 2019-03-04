@@ -2,7 +2,7 @@ package com.sh.wxapp.interceptor;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.sh.wxapp.enm.BusinessExceptionCode;
+import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.jwt.TokenUtils;
 import com.sh.wxapp.rop.JsonResponse;
 import org.springframework.stereotype.Component;
@@ -50,14 +50,14 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 //过期或者验证失败
-                JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCode.TOKEN_ERROR.getCode(),"验证失败");
+                JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
                 response.getWriter().write(JSONObject.toJSONString(jsonResponse));
                 return false;
             }
         } else {
             //无token
             //1.查验身份
-            JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCode.TOKEN_ERROR.getCode(),"验证失败");
+            JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
             response.getWriter().write(JSONObject.toJSONString(jsonResponse));
             return false;
         }

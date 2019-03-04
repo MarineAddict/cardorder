@@ -2,7 +2,8 @@ package com.sh.wxapp.serviceimp.car;
 
 import com.sh.wxapp.domain.CarInfo;
 import com.sh.wxapp.dto.car.CarUpdateDTO;
-import com.sh.wxapp.enm.BusinessExceptionCode;
+import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
+import com.sh.wxapp.enm.CarTypeEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.CarInfoMapper;
 import com.sh.wxapp.service.CarService;
@@ -32,10 +33,10 @@ public class CarServiceImp implements CarService {
     @Transactional(rollbackFor = Exception.class)
     public void addCar(Long userId, List<CarUpdateDTO> carUpdateDTOs) {
         if (CollectionUtils.isEmpty(carUpdateDTOs)) {
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(), "无录入车辆信息");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "无录入车辆信息");
         }
         if (userId == null) {
-            throw new BusinessException(BusinessExceptionCode.PARAMETER_NULL.getCode(), "用户号为空");
+            throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "用户号为空");
         }
         carUpdateDTOs.forEach(carUpdateDTO -> {
             CarInfo carInfo = new CarInfo();
@@ -66,6 +67,7 @@ public class CarServiceImp implements CarService {
                     carInfos.forEach(carInfo -> {
                         CarUpdateDTO carUpdateDTO=new CarUpdateDTO();
                         BeanUtils.copyProperties(carInfo,carUpdateDTO);
+                        carUpdateDTO.setTypeName(CarTypeEnum.getByCode(carInfo.getType()).getValue());
                         cars.add(carUpdateDTO);
                     });
                 });

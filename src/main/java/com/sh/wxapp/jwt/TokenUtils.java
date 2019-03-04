@@ -3,7 +3,7 @@ package com.sh.wxapp.jwt;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import com.sh.wxapp.enm.BusinessExceptionCode;
+import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.exception.BusinessException;
 import net.minidev.json.JSONObject;
 
@@ -59,9 +59,9 @@ public class TokenUtils {
             //生成token
             return jwsObject.serialize();
         } catch (KeyLengthException kle) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), kle.getMessage());
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), kle.getMessage());
         } catch (JOSEException je) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), je.getMessage());
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), je.getMessage());
         }
     }
 
@@ -95,9 +95,9 @@ public class TokenUtils {
             }
             return resultMap;
         } catch (ParseException pe) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), pe.getMessage());
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), pe.getMessage());
         } catch (JOSEException je) {
-            throw new BusinessException(BusinessExceptionCode.NORMAL.getCode(), je.getMessage());
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(), je.getMessage());
         }
     }
 }
