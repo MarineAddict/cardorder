@@ -24,6 +24,12 @@
     from order_info
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectIssuedOrder" resultType="com.sh.wxapp.domain.OrderInfo">
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where status=0 order by create_time desc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from order_info
     where id = #{id,jdbcType=BIGINT}
@@ -111,41 +117,41 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sh.wxapp.domain.OrderInfo" >
+  <update id="updateByPrimaryKeySelective" >
     update order_info
     <set >
-      <if test="orderNo != null" >
-        order_no = #{orderNo,jdbcType=VARCHAR},
+      <if test="OrderInfo.orderNo != null" >
+        order_no = #{OrderInfo.orderNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderType != null" >
-        order_type = #{orderType,jdbcType=INTEGER},
+      <if test="OrderInfo.orderType != null" >
+        order_type = #{OrderInfo.orderType,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="OrderInfo.status != null" >
+        status = #{OrderInfo.status,jdbcType=INTEGER},
       </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+      <if test="OrderInfo.price != null" >
+        price = #{OrderInfo.price,jdbcType=DECIMAL},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="OrderInfo.createTime != null" >
+        create_time = #{OrderInfo.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
-        create_id = #{createId,jdbcType=BIGINT},
+      <if test="OrderInfo.createId != null" >
+        create_id = #{OrderInfo.createId,jdbcType=BIGINT},
       </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="OrderInfo.updateTime != null" >
+        update_time = #{OrderInfo.updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="orderTaker != null" >
-        order_taker = #{orderTaker,jdbcType=BIGINT},
+      <if test="OrderInfo.orderTaker != null" >
+        order_taker = #{OrderInfo.orderTaker,jdbcType=BIGINT},
       </if>
-      <if test="takenTime != null" >
-        taken_time = #{takenTime,jdbcType=TIMESTAMP},
+      <if test="OrderInfo.takenTime != null" >
+        taken_time = #{OrderInfo.takenTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=BIGINT},
+      <if test="OrderInfo.version != null" >
+        version = #{OrderInfo.version,jdbcType=BIGINT},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{OrderInfo.id,jdbcType=BIGINT} and version = #{oldVersion,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sh.wxapp.domain.OrderInfo" >
     update order_info

@@ -4,7 +4,7 @@ import com.sh.wxapp.domain.AccountInfo;
 import com.sh.wxapp.domain.UserInfo;
 import com.sh.wxapp.dto.user.UserInfoDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
-import com.sh.wxapp.enm.PostionEnum;
+import com.sh.wxapp.enm.PositionEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.AccountInfoMapper;
 import com.sh.wxapp.mapper.UserInfoMapper;
@@ -80,7 +80,7 @@ public class UserServiceImp implements UserService {
         UserInfo userInfo=new UserInfo();
         userInfo.setUserId(accountInfo.getId());
         userInfo.setName(DEFAULT_NAME_PREFIX+userId);
-        userInfo.setPosition(PostionEnum.VISITOR.getCode());
+        userInfo.setPosition(PositionEnum.VISITOR.getCode());
         userInfoMapper.insertSelective(userInfo);
         return userId;
     }

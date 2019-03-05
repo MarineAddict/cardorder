@@ -2,9 +2,12 @@ package com.sh.wxapp.serviceimp.order;
 
 import com.sh.wxapp.domain.OrderDetailInfo;
 import com.sh.wxapp.domain.OrderInfo;
+import com.sh.wxapp.dto.order.OrderInfoDTO;
 import com.sh.wxapp.dto.order.OrderInsertUpdateDTO;
+import com.sh.wxapp.dto.order.OrderListQueryDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.enm.OrderStatusEnum;
+import com.sh.wxapp.enm.PositionEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.OrderDetailInfoMapper;
 import com.sh.wxapp.mapper.OrderInfoMapper;
@@ -14,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +72,14 @@ public class OrderServiceImp implements OrderService {
                         //发布情况下才删除
                         if(OrderStatusEnum.ISSUED.getCode().equals(orderInfo.getStatus())){
                             orderInfo.setStatus(OrderStatusEnum.CANCELED.getCode());
-                            orderInfoMapper.updateByPrimaryKeySelective(orderInfo);
+                            Long oldVersion=orderInfo.getVersion();
+                            Long newVersion=oldVersion+1;
+                            //加入版本号
+                            orderInfo.setVersion(newVersion);
+                            if(orderInfoMapper.updateByPrimaryKeySelective(orderInfo,oldVersion)==0){
+                                //如果更新失败
+                               throw new BusinessException(BusinessExceptionCodeEnum.UPDATE_FAIL.getCode(),"更新失败");
+                            }
                         }
                     });
         });
@@ -81,9 +93,19 @@ public class OrderServiceImp implements OrderService {
         if(orderInsertUpdateDTO.getId()==null){
             throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(),"orderId为空");
         }
-        OrderInfo orderInfo=new OrderInfo();
+        OrderInfo orderInfo=orderInfoMapper.selectByPrimaryKey(orderInsertUpdateDTO.getId());
+        if(!OrderStatusEnum.ISSUED.getCode().equals(orderInfo.getStatus())){
+            throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(),"该订单无法被修改");
+        }
+        Long oldVersion=orderInfo.getVersion();
+        Long newVersion=oldVersion+1;
+
         BeanUtils.copyProperties(orderInsertUpdateDTO,orderInfo);
-        orderInfoMapper.updateByPrimaryKeySelective(orderInfo);
+        orderInfo.setVersion(newVersion);
+        if(orderInfoMapper.updateByPrimaryKeySelective(orderInfo,oldVersion)==0){
+            //如果更新失败
+            throw new BusinessException(BusinessExceptionCodeEnum.UPDATE_FAIL.getCode(),"更新失败");
+        }
         Optional.of(orderDetailInfoMapper.selectByOrderId(orderInsertUpdateDTO.getId()))
                 .ifPresent(orderDetailInfo -> {
                     BeanUtils.copyProperties(orderInsertUpdateDTO,orderDetailInfo);
@@ -94,11 +116,53 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public void placeOrder(Long orderId, Long userId) {
+        if(orderId==null||userId==null){
+            return;
+        }
+        OrderInfo orderInfo=orderInfoMapper.selectByPrimaryKey(orderId);
+        Long oldVersion=orderInfo.getVersion();
+        Long newVersion=orderInfo.getVersion()+1;
 
+        orderInfo.setOrderTaker(userId);
+        orderInfo.setStatus(OrderStatusEnum.TAKEN.getCode());
+        orderInfo.setTakenTime(new Date());
+        orderInfo.setVersion(newVersion);
+        if(orderInfoMapper.updateByPrimaryKeySelective(orderInfo,oldVersion)==0){
+            //更新失败说明被抢
+            throw new BusinessException(BusinessExceptionCodeEnum.ORDER_TAKEN_ALREADY);
+        }
     }
 
     @Override
     public void cancelOrder(Long orderId) {
+        OrderInfo orderInfo=orderInfoMapper.selectByPrimaryKey(orderId);
+        if(OrderStatusEnum.TAKEN.getCode().equals(orderInfo.getStatus())){
+            Long oldVersion=orderInfo.getVersion();
+            Long newVersion=oldVersion+1;
+            orderInfo.setVersion(newVersion);
+            orderInfo.setStatus(OrderStatusEnum.ISSUED.getCode());
+            orderInfoMapper.updateByPrimaryKeySelective(orderInfo,oldVersion);
+        }
+    }
 
+    @Override
+    public List<OrderInfoDTO> getIssuedOrders(PositionEnum positionEnum, OrderListQueryDTO orderListQueryDTO) {
+        if(positionEnum ==null){
+            return null;
+        }
+        //游客不允许查看订单
+        if(PositionEnum.VISITOR.equals(positionEnum.getCode())){
+            return null;
+        }
+        List<OrderInfoDTO> list=new ArrayList<>();
+        switch (positionEnum){
+            case TAKER:{
+
+            }
+            case ISSUER:{
+
+            }
+        }
+        return list;
     }
 }

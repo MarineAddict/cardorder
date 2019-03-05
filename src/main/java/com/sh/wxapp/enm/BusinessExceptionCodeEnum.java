@@ -9,8 +9,11 @@ public enum BusinessExceptionCodeEnum {
 
 
     TOKEN_EMPTY("301","无令牌"),
-    TOKEN_ERROR("302","令牌验证失效");
+    TOKEN_ERROR("302","令牌验证失效"),
 
+    UPDATE_FAIL("401","更新失败"),
+
+    ORDER_TAKEN_ALREADY("501","该单已被抢");
 
     BusinessExceptionCodeEnum(String code, String msg) {
         this.code = code;

@@ -1,6 +1,9 @@
 package com.sh.wxapp.mapper;
 
 import com.sh.wxapp.domain.OrderInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderInfoMapper {
     int deleteByPrimaryKey(Long id);
@@ -11,7 +14,9 @@ public interface OrderInfoMapper {
 
     OrderInfo selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(OrderInfo record);
+    List<OrderInfo> selectIssuedOrder();
+
+    int updateByPrimaryKeySelective(@Param("OrderInfo") OrderInfo record,@Param("oldVersion") Long oldVersion);
 
     int updateByPrimaryKey(OrderInfo record);
 }

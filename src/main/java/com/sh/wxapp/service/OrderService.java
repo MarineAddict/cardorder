@@ -1,6 +1,9 @@
 package com.sh.wxapp.service;
 
+import com.sh.wxapp.dto.order.OrderInfoDTO;
 import com.sh.wxapp.dto.order.OrderInsertUpdateDTO;
+import com.sh.wxapp.dto.order.OrderListQueryDTO;
+import com.sh.wxapp.enm.PositionEnum;
 
 import java.util.List;
 
@@ -39,11 +42,22 @@ public interface OrderService {
     void placeOrder(Long orderId,Long userId);
 
     /**
-    * @Description: 取消订单
+    * @Description: 取消订单(已抢单的取消)
     * @Param:
     * @return:
     * @Author: xuqie
     * @Date: 2019/3/4
     */
     void cancelOrder(Long orderId);
+
+
+    /**
+    * @Description:查询已发布的全部订单,根据人员
+    * @Param:
+    * @return:
+    * @Author: xuqie
+    * @Date: 2019/3/5
+    */
+    List<OrderInfoDTO> getIssuedOrders(PositionEnum positionEnum, OrderListQueryDTO orderListQueryDTO);
+
 }

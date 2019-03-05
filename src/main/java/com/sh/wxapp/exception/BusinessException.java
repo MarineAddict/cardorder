@@ -1,5 +1,7 @@
 package com.sh.wxapp.exception;
 
+import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
+
 /**
  * 业务异常
  * @program: carorder
@@ -16,6 +18,12 @@ public class BusinessException extends RuntimeException{
 
     public BusinessException() {
         super();
+    }
+
+    public BusinessException(BusinessExceptionCodeEnum enm){
+        super(enm.getMsg());
+        this.code=enm.getCode();
+        this.message = enm.getMsg();
     }
 
     public BusinessException(String code,String message) {

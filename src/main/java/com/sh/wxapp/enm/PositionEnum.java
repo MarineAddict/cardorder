@@ -2,10 +2,8 @@ package com.sh.wxapp.enm;
 
 import com.sh.wxapp.exception.BusinessException;
 
-import javax.swing.text.Position;
-
 /*身份*/
-public enum PostionEnum {
+public enum PositionEnum {
 
     TAKER(1,"接单人"),
     ISSUER(2,"发单人"),
@@ -14,7 +12,7 @@ public enum PostionEnum {
     private Integer code;
     private String value;
 
-    PostionEnum(Integer code, String value) {
+    PositionEnum(Integer code, String value) {
         this.code = code;
         this.value = value;
     }
@@ -27,11 +25,11 @@ public enum PostionEnum {
         return value;
     }
 
-    public static PostionEnum getPositionByCode(Integer code){
+    public static PositionEnum getPositionByCode(Integer code){
         if(code==null){
             throw new NullPointerException();
         }
-        for(PostionEnum position:PostionEnum.values()){
+        for(PositionEnum position: PositionEnum.values()){
             if(position.getCode().equals(code)){
                 return position;
             }
