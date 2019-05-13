@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @program: carorder
  * @description:
  * @author: xuqie
- * @create: 2019-03-05 15:24
+ * @: 2019-03-05 15:24
  **/
 public class OrderInfoDTO {
 

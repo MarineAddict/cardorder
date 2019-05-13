@@ -1,10 +1,13 @@
 package com.sh.wxapp.serviceimp.order;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sh.wxapp.domain.OrderDetailInfo;
 import com.sh.wxapp.domain.OrderInfo;
+import com.sh.wxapp.dto.PageableDTO;
 import com.sh.wxapp.dto.order.OrderInfoDTO;
 import com.sh.wxapp.dto.order.OrderInsertUpdateDTO;
-import com.sh.wxapp.dto.order.OrderListQueryDTO;
+import com.sh.wxapp.dto.order.LiveOrderListQueryDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.enm.OrderStatusEnum;
 import com.sh.wxapp.enm.PositionEnum;
@@ -146,23 +149,28 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public List<OrderInfoDTO> getIssuedOrders(PositionEnum positionEnum, OrderListQueryDTO orderListQueryDTO) {
-        if(positionEnum ==null){
+    public PageableDTO<List<OrderInfoDTO>> getIssuedOrders(Integer positionCode, LiveOrderListQueryDTO liveOrderListQueryDTO) {
+        if(positionCode ==null){
             return null;
         }
         //游客不允许查看订单
-        if(PositionEnum.VISITOR.equals(positionEnum.getCode())){
+        if(PositionEnum.VISITOR.getCode().equals(positionCode)){
             return null;
         }
         List<OrderInfoDTO> list=new ArrayList<>();
-        switch (positionEnum){
-            case TAKER:{
-
-            }
-            case ISSUER:{
-
-            }
-        }
-        return list;
+        PageInfo<List<OrderInfoDTO>> info=PageHelper.startPage(liveOrderListQueryDTO.getPageNum(),liveOrderListQueryDTO.getPageSize(),true)
+                .doSelectPageInfo(()->{
+        });
+        Optional.ofNullable(orderInfoMapper.selectIssuedOrder(liveOrderListQueryDTO))
+                .ifPresent(orderInfos -> {
+                    orderInfos.forEach(orderInfo -> {
+                        OrderInfoDTO orderInfoDTO=new OrderInfoDTO();
+                        BeanUtils.copyProperties(orderInfo,orderInfoDTO);
+                        list.add(orderInfoDTO);
+                    });
+                });
+        PageableDTO<List<OrderInfoDTO>> dto=new PageableDTO<>(info);
+        return dto;
     }
+
 }

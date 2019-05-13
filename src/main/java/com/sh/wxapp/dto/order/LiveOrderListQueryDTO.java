@@ -1,5 +1,7 @@
 package com.sh.wxapp.dto.order;
 
+import com.sh.wxapp.dto.PageableQueryDTO;
+
 import java.util.Date;
 
 /**
@@ -8,23 +10,15 @@ import java.util.Date;
  * @author: xuqie
  * @create: 2019-03-05 16:49
  **/
-public class OrderListQueryDTO {
+public class LiveOrderListQueryDTO extends PageableQueryDTO {
 
     private String orderNo;
 
     private Integer orderType;
 
-    private Integer status;
-
     private Date createStartDate;
 
     private Date createEndDate;
-
-    private Long orderTaker;
-
-    private Date takenTimeStartDate;
-
-    private Date takenTimeEndDate;
 
     public String getOrderNo() {
         return orderNo;
@@ -40,14 +34,6 @@ public class OrderListQueryDTO {
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public Date getCreateStartDate() {
@@ -66,27 +52,4 @@ public class OrderListQueryDTO {
         this.createEndDate = createEndDate;
     }
 
-    public Long getOrderTaker() {
-        return orderTaker;
-    }
-
-    public void setOrderTaker(Long orderTaker) {
-        this.orderTaker = orderTaker;
-    }
-
-    public Date getTakenTimeStartDate() {
-        return takenTimeStartDate;
-    }
-
-    public void setTakenTimeStartDate(Date takenTimeStartDate) {
-        this.takenTimeStartDate = takenTimeStartDate;
-    }
-
-    public Date getTakenTimeEndDate() {
-        return takenTimeEndDate;
-    }
-
-    public void setTakenTimeEndDate(Date takenTimeEndDate) {
-        this.takenTimeEndDate = takenTimeEndDate;
-    }
 }

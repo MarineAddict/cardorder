@@ -24,12 +24,26 @@
     from order_info
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectIssuedOrder" resultType="com.sh.wxapp.domain.OrderInfo">
+  <select id="selectIssuedOrder" resultMap="BaseResultMap" parameterType="com.sh.wxapp.dto.order.LiveOrderListQueryDTO">
     select
     <include refid="Base_Column_List" />
     from order_info
-    where status=0 order by create_time desc
+    where status=0
+    <if test="orderNo !=null">
+      and order_no=#{orderNo},
+    </if>
+    <if test="orderType !=null">
+      and order_type=#{orderType},
+    </if>
+    <if test="createStartDate !=null">
+      and create_time gt;= #{createStartDate},
+    </if>
+    <if test="createEndDate !=null">
+      and create_time lt;= #{createEndDate},
+    </if>
+    order by create_time desc
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from order_info
     where id = #{id,jdbcType=BIGINT}

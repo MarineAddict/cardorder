@@ -1,8 +1,9 @@
 package com.sh.wxapp.service;
 
+import com.sh.wxapp.dto.PageableDTO;
 import com.sh.wxapp.dto.order.OrderInfoDTO;
 import com.sh.wxapp.dto.order.OrderInsertUpdateDTO;
-import com.sh.wxapp.dto.order.OrderListQueryDTO;
+import com.sh.wxapp.dto.order.LiveOrderListQueryDTO;
 import com.sh.wxapp.enm.PositionEnum;
 
 import java.util.List;
@@ -58,6 +59,6 @@ public interface OrderService {
     * @Author: xuqie
     * @Date: 2019/3/5
     */
-    List<OrderInfoDTO> getIssuedOrders(PositionEnum positionEnum, OrderListQueryDTO orderListQueryDTO);
+    PageableDTO<List<OrderInfoDTO>> getIssuedOrders(Integer positionCode, LiveOrderListQueryDTO liveOrderListQueryDTO);
 
 }

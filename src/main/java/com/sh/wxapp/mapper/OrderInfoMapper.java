@@ -1,6 +1,7 @@
 package com.sh.wxapp.mapper;
 
 import com.sh.wxapp.domain.OrderInfo;
+import com.sh.wxapp.dto.order.LiveOrderListQueryDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface OrderInfoMapper {
 
     OrderInfo selectByPrimaryKey(Long id);
 
-    List<OrderInfo> selectIssuedOrder();
+    List<OrderInfo> selectIssuedOrder(LiveOrderListQueryDTO liveOrderListQueryDTO);
 
     int updateByPrimaryKeySelective(@Param("OrderInfo") OrderInfo record,@Param("oldVersion") Long oldVersion);
 
