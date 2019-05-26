@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  **/
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@EnableWebMvc
 @ServletComponentScan
 public class Application {
     private static Logger logger = LoggerFactory.getLogger(Application.class);

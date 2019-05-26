@@ -26,6 +26,7 @@ import java.util.Map;
 public class AuthInterceptor implements HandlerInterceptor {
 
 
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -39,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 if (result.get(TokenUtils.EXPIRETIME) != null) {
                     response.setHeader("token", token);
                     Long expDate = Long.valueOf(result.get(TokenUtils.EXPIRETIME).toString());
-                    Long now = new Date().getTime();
+                    Long now = System.currentTimeMillis();
                     //过期时间小于有效的时间
                     if (expDate - now <= TokenUtils.TOKEN_REFRESH_TIME) {
                         Object userId = result.get(TokenUtils.USERID);
@@ -52,6 +53,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 //过期或者验证失败
+                response.sendRedirect("/loginPage/index");
                 JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
                 response.getWriter().write(JSONObject.toJSONString(jsonResponse));
                 return false;
@@ -59,6 +61,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         } else {
             //无token
             //1.查验身份
+            response.sendRedirect("/loginPage/index");
             JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
             response.getWriter().write(JSONObject.toJSONString(jsonResponse));
             return false;

@@ -32,7 +32,7 @@ public class UserController {
     public JsonResponse login(HttpServletRequest request,String username, String password) {
         UserInfoDTO userInfoDTO = userService.getUser(username, password);
         Map map = new HashMap();
-        map.put(TokenUtils.EXPIRETIME, new Date().getTime() + TokenUtils.TOKEN_VALID_TIME);
+        map.put(TokenUtils.EXPIRETIME, System.currentTimeMillis() + TokenUtils.TOKEN_VALID_TIME);
         map.put(TokenUtils.USERID, userInfoDTO.getUserId());
         String token = TokenUtils.createToken(map);
         request.getSession().setAttribute("userInfo",userInfoDTO);

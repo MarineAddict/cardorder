@@ -37,6 +37,7 @@ public class UserServiceImp implements UserService {
 
     private Logger log = LoggerFactory.getLogger(UserServiceImp.class);
 
+    @Override
     public UserInfoDTO getUser(String username, String password) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(username)) {
             throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "请输入账户名和密码");

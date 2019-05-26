@@ -21,13 +21,15 @@ public class GlobalInterceptorAdaptor implements WebMvcConfigurer {
     @Autowired
     private AuthInterceptor authInterceptor;
 
-    private final static String[] EXCLUDE_PATH = {"/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs", "/login", "/register","/error"};
+    private final static String[] EXCLUDE_PATH = {"/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs", "/login", "/register","/error","/loginPage/**","/static/**"};
     private final static List<String> excludePath = Arrays.asList(EXCLUDE_PATH);
 
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns(excludePath);
     }
 
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
