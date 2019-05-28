@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -33,7 +34,19 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         //token校验
         String token = request.getHeader("token");
+        if(StringUtils.isEmpty(token)){
+            //可能不在head，查询cookies
+            Cookie[] cookies=request.getCookies();
+            for(Cookie cookie:cookies){
+                if("token".equals(cookie.getName())){
+                    token=cookie.getValue();
+                    break;
+                }
+            }
+        }
+        //再次判断token是否存在
         if (!StringUtils.isEmpty(token)) {
+            //存在cookie
             Map<String, Object> result = TokenUtils.parseToken(token);
             if (result.get(TokenUtils.RESULT).equals(TokenUtils.TOKEN_PASS)) {
                 //通过,验证时间是否发新token

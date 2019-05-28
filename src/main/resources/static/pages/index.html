@@ -58,8 +58,12 @@
          data:$("#form").serializeArray(),
          contentType:'application/x-www-form-urlencoded',
          success:function(data){
-             console.log(JSON.parse(data).data.token);
-             window.location.href="orderInfoPage/index";
+             var token=JSON.parse(data).data.token;
+             if(token!=null){
+                 console.log(JSON.parse(data).data.token);
+                 document.cookie="token="+token;
+                 document.location.href="/main/index";
+             }
          }
      })
     })

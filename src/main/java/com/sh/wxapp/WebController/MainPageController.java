@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author: xuqie
  * @create: 2019-05-27 02:23
  **/
-@RequestMapping("/orderInfoPage")
+@RequestMapping("/main")
 @Controller
-public class OrderInfoController {
+public class MainPageController {
 
 
     @RequestMapping("/index")
     public String OrderInfoPage(){
-        return "index";
+        return "main";
     }
 
 }

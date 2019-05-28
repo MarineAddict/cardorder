@@ -5,13 +5,13 @@ import com.sh.wxapp.jwt.TokenUtils;
 import com.sh.wxapp.req.user.UserInfoUpdateRequest;
 import com.sh.wxapp.rop.JsonResponse;
 import com.sh.wxapp.service.UserService;
+import com.sh.wxapp.util.CookieUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +31,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public JsonResponse login(HttpServletRequest request,String username, String password) {
         UserInfoDTO userInfoDTO = userService.getUser(username, password);
+        CookieUtils.removeCookie(request,"token");
         Map map = new HashMap();
         map.put(TokenUtils.EXPIRETIME, System.currentTimeMillis() + TokenUtils.TOKEN_VALID_TIME);
         map.put(TokenUtils.USERID, userInfoDTO.getUserId());

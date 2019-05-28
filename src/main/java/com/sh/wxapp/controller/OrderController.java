@@ -7,6 +7,7 @@ import com.sh.wxapp.req.order.LiveOrderListQueryReq;
 import com.sh.wxapp.rop.JsonResponse;
 import com.sh.wxapp.service.OrderService;
 import com.sh.wxapp.util.SsoUtil;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class OrderController {
     private OrderService orderService;
 
     @RequestMapping(value = "/getIssuedOrders",method = RequestMethod.POST)
+    @ApiModelProperty("获取已发布的订单（即可抢的有效单）")
     public JsonResponse getIssuedOrders(@RequestBody LiveOrderListQueryReq req){
         Integer positionCode=SsoUtil.getCurrentUser().getPosition();
         LiveOrderListQueryDTO dto=new LiveOrderListQueryDTO();

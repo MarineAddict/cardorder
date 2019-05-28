@@ -83,7 +83,7 @@ public class TokenUtils {
                 //验证过期
                 if (jsonObject.containsKey(EXPIRETIME)) {
                     Long expTime = Long.valueOf(jsonObject.get(EXPIRETIME).toString());
-                    Long currTime = new Date().getTime();
+                    Long currTime = System.currentTimeMillis();
                     if (expTime < currTime) {
                         resultMap.clear();
                         resultMap.put(RESULT, TOKE_EXPIRE);

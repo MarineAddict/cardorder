@@ -14,7 +14,9 @@ public enum OrderStatusEnum {
     ISSUED(0, "已发布"),
     TAKEN(1, "已接单"),
     FINISHED(2, "已完成"),
-    CANCELED(4, "已取消");
+    CANCELED(4, "已取消"),
+    CHECKED_OUT(5,"已结账")
+    ;
 
     private Integer code;
     private String value;
