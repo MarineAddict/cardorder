@@ -9,43 +9,33 @@
     <script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-<nav class="navbar navbar-default" role="navigation">
+<!-- 左侧边栏 -->
+<div style="height:100%;">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#example-navbar-collapse">
-                <span class="sr-only">切换导航</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">菜鸟教程</a>
+        <!--首行-->
+        <div class="row" style="margin: 1%">
+            <div class="col-sm-11" >接单管理系统</div>
+            <div class="col-sm-1" >退出</div>
         </div>
-        <div class="collapse navbar-collapse" id="example-navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">iOS</a></li>
-                <li><a href="#">SVN</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        Java <b class="caret"></b>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="page-header">
+                    <h1>管理操作栏</h1>
+                </div>
+                <ul class="nav nav-pills nav-stacked nav-bracket list-group" style="font-size:16px;">
+                    <a href="#" class="list-group-item">
+                        订单管理
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">jmeter</a></li>
-                        <li><a href="#">EJB</a></li>
-                        <li><a href="#">Jasper Report</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">分离的链接</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">另一个分离的链接</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    <a href="#" class="list-group-item">
+                        人员管理
+                    </a>
+                </ul>
+            </div>
+            <div class="col-sm-10">
+222
+            </div>
         </div>
     </div>
-</nav>
-        <div class="row">
 </div>
 <script>
 </script>

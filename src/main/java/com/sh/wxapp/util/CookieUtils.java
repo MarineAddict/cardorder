@@ -4,6 +4,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 /**
@@ -14,16 +15,22 @@ import java.util.Collection;
  **/
 public class CookieUtils {
 
-    public static void removeCookie(HttpServletRequest request, String cookieName){
+    public static void removeCookie(HttpServletRequest request, HttpServletResponse response, String cookieName){
         if(request.getCookies().length>0){
             for (Cookie cookie :request.getCookies()) {
                 if(cookieName.equals(cookie.getName())){
-                    cookie.setPath("/");
                     //删除
                     cookie.setMaxAge(0);
+                    response.addCookie(cookie);
                 }
             }
         }
+    }
+
+    public static void addCookie(HttpServletResponse response, String cookieName,String cookieValue){
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
 }

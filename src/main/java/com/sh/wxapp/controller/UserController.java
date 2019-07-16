@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,14 +30,15 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public JsonResponse login(HttpServletRequest request,String username, String password) {
+    public JsonResponse login(HttpServletRequest request, HttpServletResponse response, String username, String password) {
         UserInfoDTO userInfoDTO = userService.getUser(username, password);
-        CookieUtils.removeCookie(request,"token");
+        CookieUtils.removeCookie(request,response,"token");
         Map map = new HashMap();
         map.put(TokenUtils.EXPIRETIME, System.currentTimeMillis() + TokenUtils.TOKEN_VALID_TIME);
         map.put(TokenUtils.USERID, userInfoDTO.getUserId());
         String token = TokenUtils.createToken(map);
         request.getSession().setAttribute("userInfo",userInfoDTO);
+        CookieUtils.addCookie(response,"token",token);
         Map mp = new HashMap();
         mp.put("token", token);
         return JsonResponse.success("登陆成功", mp);
