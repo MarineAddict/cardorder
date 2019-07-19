@@ -57,11 +57,16 @@
          url:'/login' ,
          data:$("#form").serializeArray(),
          contentType:'application/x-www-form-urlencoded',
-         success:function(data){
-             var token=JSON.parse(data).data.token;
-             if(token!=null){
-                 console.log(JSON.parse(data).data.token);
-                 document.location.href="/main/index";
+         success:function(response) {
+             if (JSON.parse(response).data != null) {
+                 var token = JSON.parse(response).data.token;
+                 if (token != null) {
+                     console.log(JSON.parse(response).data.token);
+                     document.location.href = "/main/index";
+                 }
+             }else{
+                 //token不对，登陆失败
+                 alert(JSON.parse(response).msg)
              }
          }
      })

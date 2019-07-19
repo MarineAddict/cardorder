@@ -7,6 +7,8 @@
     <script type="text/javascript" th:src="@{/static/js/jquery-3.4.1.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/jquery.form.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/bootstrap-closable-tab.js}"></script>
+
 </head>
 <body>
 <!-- 左侧边栏 -->
@@ -23,20 +25,54 @@
                     <h1>管理操作栏</h1>
                 </div>
                 <ul class="nav nav-pills nav-stacked nav-bracket list-group" style="font-size:16px;">
-                    <a href="#" class="list-group-item">
+                    <a id="orderManage" href="#" class="list-group-item">
                         订单管理
                     </a>
-                    <a href="#" class="list-group-item">
+                    <a id="userManage" href="#" class="list-group-item">
                         人员管理
                     </a>
                 </ul>
             </div>
             <div class="col-sm-10">
-222
+                <div class="row">
+                    <ul class="nav nav-tabs" role="tablist">
+                    </ul>
+                    <div class="tab-content" style="width:100%;">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
+    $(function(){
+        var item = {'id':'1','name':'首页','url':'1111','closable':false};
+        closableTab.addTab(item);
+    })
+
+    $('#orderManage').click(function () {
+        //找到并激活orderManage
+        findTabAndActive("orderManageTab","订单管理")
+    });
+    $('#userManage').click(function () {
+        //找到并激活userManage
+        findTabAndActive("userManageTab","人员管理")
+    });
+
+    var findTabAndActive = function (activeId,activeName) {
+        // $('#main_tab').children("li").each(function(e,v){
+        //    var name= $(this).attr("id");
+        //     if(name==activeName){
+        //         //遍历去除其他得active
+        //         $('#main_tab').children("li").each(function(e,v){
+        //            $(this).removeClass("active")
+        //         });
+        //         $(this).addClass("active");
+        //     }
+        // })
+        var item = {'id':activeId,'name':activeName,'url':"root",'closable':true};
+        closableTab.addTab(item);
+    };
+
 </script>
 </body>
