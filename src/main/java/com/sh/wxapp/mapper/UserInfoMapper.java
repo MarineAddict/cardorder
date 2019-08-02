@@ -1,6 +1,9 @@
 package com.sh.wxapp.mapper;
 
 import com.sh.wxapp.domain.UserInfo;
+import com.sh.wxapp.dto.user.UserListQueryDTO;
+
+import java.util.List;
 
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,4 +21,6 @@ public interface UserInfoMapper {
     int updateByUserIdSelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);
+
+    List<UserInfo> getUserList(UserListQueryDTO queryDTO);
 }

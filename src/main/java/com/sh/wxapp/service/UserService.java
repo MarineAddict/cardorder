@@ -1,6 +1,8 @@
 package com.sh.wxapp.service;
 
-import com.sh.wxapp.dto.user.UserInfoDTO;
+import com.sh.wxapp.dto.PageableDTO;
+import com.sh.wxapp.dto.user.UserListDTO;
+import com.sh.wxapp.dto.user.UserListQueryDTO;
 
 /**
  * UserService
@@ -11,12 +13,6 @@ import com.sh.wxapp.dto.user.UserInfoDTO;
 
 public interface UserService {
 
-    /*账号密码获得用户*/
-    UserInfoDTO getUser(String username,String password);
+    PageableDTO<UserListDTO> getUserList(UserListQueryDTO queryDTO);
 
-    /*账号密码注册*/
-    Long register(String userName,String password);
-
-    /*更新个人信息*/
-    void updateUserInfo(Long userId,UserInfoDTO userInfoDTO);
 }

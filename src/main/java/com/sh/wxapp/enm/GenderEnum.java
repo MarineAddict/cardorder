@@ -29,10 +29,10 @@ public enum GenderEnum {
         this.value = value;
     }
 
-    public static String getValueByCode(Integer code){
+    public static GenderEnum getByCode(Integer code){
         for(GenderEnum en:GenderEnum.values()){
             if(en.getCode().equals(code)){
-                return en.getValue();
+                return en;
             }
         }
         return null;

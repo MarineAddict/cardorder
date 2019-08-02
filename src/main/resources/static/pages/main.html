@@ -8,7 +8,6 @@
     <script type="text/javascript" th:src="@{/static/js/jquery.form.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/bootstrap-closable-tab.js}"></script>
-
 </head>
 <body>
 <!-- 左侧边栏 -->
@@ -33,11 +32,11 @@
                     </a>
                 </ul>
             </div>
-            <div class="col-sm-10">
-                <div class="row">
+            <div class="col-sm-10" style="height: 600px">
+                <div class="row" style="height: 100%;">
                     <ul class="nav nav-tabs" role="tablist">
                     </ul>
-                    <div class="tab-content" style="width:100%;">
+                    <div class="tab-content" style="width:100%;height: 100%">
                     </div>
                 </div>
             </div>
@@ -45,34 +44,40 @@
     </div>
 </div>
 <script>
-    $(function(){
-        var item = {'id':'1','name':'首页','url':'1111','closable':false};
-        closableTab.addTab(item);
-    })
+    // $(function(){
+    //     var item = {'id':'1','name':'首页','url':'1111','closable':false};
+    //     closableTab.addTab(item);
+    // })
 
     $('#orderManage').click(function () {
         //找到并激活orderManage
-        findTabAndActive("orderManageTab","订单管理")
+        var url="orderManagePage"
+        findTabAndActive("orderManageTab","订单管理",url)
     });
     $('#userManage').click(function () {
+        var url="userManagePage"
         //找到并激活userManage
-        findTabAndActive("userManageTab","人员管理")
+        findTabAndActive("userManageTab","人员管理",url)
+        // if($("#tab_container_userManageTab")){
+        //     var param={'userId':''};
+        //     $.ajax({
+        //         type:'post',
+        //         data:JSON.stringify(param),
+        //         dataType:'json',
+        //         url:'/user/userList' ,
+        //         contentType:'application/json',
+        //         success:function(response) {
+        //             console.log(JSON.parse(response));
+        //         }
+        //     })
+        // }
     });
 
-    var findTabAndActive = function (activeId,activeName) {
-        // $('#main_tab').children("li").each(function(e,v){
-        //    var name= $(this).attr("id");
-        //     if(name==activeName){
-        //         //遍历去除其他得active
-        //         $('#main_tab').children("li").each(function(e,v){
-        //            $(this).removeClass("active")
-        //         });
-        //         $(this).addClass("active");
-        //     }
-        // })
-        var item = {'id':activeId,'name':activeName,'url':"root",'closable':true};
+    var findTabAndActive = function (activeId,activeName,url) {
+        var item = {'id':activeId,'name':activeName,'url':url,'closable':true,'method':'post'};
         closableTab.addTab(item);
     };
+
 
 </script>
 </body>

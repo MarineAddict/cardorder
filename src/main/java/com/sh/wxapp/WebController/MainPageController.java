@@ -19,4 +19,9 @@ public class MainPageController {
         return "main";
     }
 
+    @RequestMapping("/userManagePage")
+    public String userManagePage(){
+        return "user/user_manage";
+    }
+
 }

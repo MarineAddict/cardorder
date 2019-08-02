@@ -5,8 +5,8 @@ import com.sh.wxapp.exception.BusinessException;
 /*身份*/
 public enum PositionEnum {
 
-    TAKER(1,"接单人"),
-    ISSUER(2,"发单人"),
+    DRIVER(1,"司机"),
+    MANAGER(2,"管理员"),
     VISITOR(3,"游客");
 
     private Integer code;

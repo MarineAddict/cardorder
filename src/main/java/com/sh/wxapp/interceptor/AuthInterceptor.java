@@ -2,6 +2,7 @@ package com.sh.wxapp.interceptor;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.sh.wxapp.dto.user.UserInfoDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.jwt.TokenUtils;
 import com.sh.wxapp.rop.JsonResponse;
@@ -46,9 +47,21 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         //再次判断token是否存在
         if (!StringUtils.isEmpty(token)) {
+            //测试使用,直接通过
+            if(token.equals("testToken")){
+                return true;
+            }
             //存在cookie
             Map<String, Object> result = TokenUtils.parseToken(token);
+            //token经过解析后得到分析结果为通过
             if (result.get(TokenUtils.RESULT).equals(TokenUtils.TOKEN_PASS)) {
+                //加入逻辑，需要查看session中是否有userInfo，没有说明当前的人员信息丢失，依然需要重新登陆
+                UserInfoDTO userInfoDTO = (UserInfoDTO)request.getSession().getAttribute("userInfo");
+                if(userInfoDTO==null){
+                    //人员为空信息，直接返回登陆
+                    response.sendRedirect("/loginPage/index");
+                    return false;
+                }
                 //通过,验证时间是否发新token
                 if (result.get(TokenUtils.EXPIRETIME) != null) {
                     response.setHeader("token", token);

@@ -8,7 +8,7 @@ import com.sh.wxapp.enm.PositionEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.AccountInfoMapper;
 import com.sh.wxapp.mapper.UserInfoMapper;
-import com.sh.wxapp.service.UserService;
+import com.sh.wxapp.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +25,8 @@ import java.util.Optional;
  * @author xuqie
  * @version 1.0.0
  **/
-@Service("userService")
-public class UserServiceImp implements UserService {
+@Service("accountService")
+public class AccountServiceImp implements AccountService {
 
     private static final String DEFAULT_NAME_PREFIX="用户";
 
@@ -35,10 +35,10 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    private Logger log = LoggerFactory.getLogger(UserServiceImp.class);
+    private Logger log = LoggerFactory.getLogger(AccountServiceImp.class);
 
     @Override
-    public UserInfoDTO getUser(String username, String password) {
+    public UserInfoDTO getAccount(String username, String password) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(username)) {
             throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(), "请输入账户名和密码");
         }
@@ -87,7 +87,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateUserInfo(Long userId,UserInfoDTO userInfoDTO){
+    public void updateAccountInfo(Long userId, UserInfoDTO userInfoDTO){
         if(userId==null){
             throw new BusinessException(BusinessExceptionCodeEnum.PARAMETER_NULL.getCode(),"userId为空");
         }

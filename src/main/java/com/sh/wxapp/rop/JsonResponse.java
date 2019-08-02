@@ -48,6 +48,9 @@ public class JsonResponse<T> {
     public static <T> JsonResponse success(String msg,T data){
         return new JsonResponse<T>("200",msg,data);
     }
+    public static <T> JsonResponse success(T data){
+        return new JsonResponse<T>("200","成功",data);
+    }
 
     public static <T> JsonResponse fail(String code,String msg){
         return new JsonResponse<T>(code,msg,null);

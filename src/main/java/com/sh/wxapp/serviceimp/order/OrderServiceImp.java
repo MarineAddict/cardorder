@@ -18,6 +18,7 @@ import com.sh.wxapp.service.OrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class OrderServiceImp implements OrderService {
     private OrderDetailInfoMapper orderDetailInfoMapper;
 
     @Override
+    @Transactional(rollbackFor = BusinessException.class)
     public void addOrders(List<OrderInsertUpdateDTO> orders, Long userId) {
         if (CollectionUtils.isEmpty(orders)) {
             return;
@@ -51,13 +53,14 @@ public class OrderServiceImp implements OrderService {
             OrderInfo orderInfo = new OrderInfo();
             orderInfo.setStatus(OrderStatusEnum.ISSUED.getCode());
             BeanUtils.copyProperties(orderInsertUpdateDTO, orderInfo);
+            orderInfo.setCreateId(userId);
             orderInfoMapper.insertSelective(orderInfo);
             if(orderInfo.getId()==null){
                 throw new BusinessException(BusinessExceptionCodeEnum.NORMAL.getCode(),"插入时异常");
             }
             OrderDetailInfo orderDetailInfo=new OrderDetailInfo();
             orderDetailInfo.setOrderId(orderInfo.getId());
-            BeanUtils.copyProperties(orderInsertUpdateDTO,orderInfo);
+            BeanUtils.copyProperties(orderInsertUpdateDTO,orderDetailInfo);
             orderDetailInfoMapper.insertSelective(orderDetailInfo);
         });
     }
@@ -158,17 +161,18 @@ public class OrderServiceImp implements OrderService {
             return null;
         }
         List<OrderInfoDTO> list=new ArrayList<>();
-        PageInfo<List<OrderInfoDTO>> info=PageHelper.startPage(liveOrderListQueryDTO.getPageNum(),liveOrderListQueryDTO.getPageSize(),true)
+        PageInfo<OrderInfoDTO> info=PageHelper.startPage(liveOrderListQueryDTO.getPageNum(),liveOrderListQueryDTO.getPageSize(),true)
                 .doSelectPageInfo(()->{
+                    Optional.ofNullable(orderInfoMapper.selectIssuedOrder(liveOrderListQueryDTO))
+                            .ifPresent(orderInfos -> {
+                                orderInfos.forEach(orderInfo -> {
+                                    OrderInfoDTO orderInfoDTO=new OrderInfoDTO();
+                                    BeanUtils.copyProperties(orderInfo,orderInfoDTO);
+                                    list.add(orderInfoDTO);
+                                });
+                            });
         });
-        Optional.ofNullable(orderInfoMapper.selectIssuedOrder(liveOrderListQueryDTO))
-                .ifPresent(orderInfos -> {
-                    orderInfos.forEach(orderInfo -> {
-                        OrderInfoDTO orderInfoDTO=new OrderInfoDTO();
-                        BeanUtils.copyProperties(orderInfo,orderInfoDTO);
-                        list.add(orderInfoDTO);
-                    });
-                });
+        info.setList(list);
         PageableDTO<List<OrderInfoDTO>> dto=new PageableDTO<>(info);
         return dto;
     }

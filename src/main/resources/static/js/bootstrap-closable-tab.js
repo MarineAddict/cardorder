@@ -23,8 +23,9 @@ var closableTab = {
 				li_tab = li_tab + '</a></li>';
 			}
 		
-		 	var tabpanel = '<div role="tabpanel" class="tab-pane" id="'+container+'" style="width: 100%;">'+
-	    					  '<iframe src="'+tabItem.url+'" id="tab_frame_2" frameborder="0" style="overflow-x: hidden; overflow-y: hidden;width:100%;height: 100%"  onload="closableTab.frameLoad(this)"></iframe>'+
+		 	var tabpanel = '<div role="tabpanel" class="tab-pane" id="'+container+'" style="width: 100%; min-height: 100%">'+
+	    					  // '<iframe src="'+tabItem.url+'" id="tab_frame_2" frameborder="0" style="overflow-x: hidden; overflow-y: hidden;width:100%;height: 100%"  onload="closableTab.frameLoad(this)"></iframe>'+
+                '<iframe src="'+tabItem.url+'" id="tab_frame_2" frameborder="0" style="overflow-x: hidden; overflow-y: hidden;width:100%;height: 100%"  onload="closableTab.frameLoad(this)"></iframe>'+
 	    				   '</div>';
 
 
@@ -33,6 +34,8 @@ var closableTab = {
 		}
 		$("#"+id).addClass("active");
 		$("#"+container).addClass("active");
+        console.log($("div.tab-pane").attr("id"));
+        // $("div.tab-pane").css("cssText","width:100% !important;height:100% !important");
 	},
 
 	//关闭tab

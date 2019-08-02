@@ -15,6 +15,8 @@ import java.util.Collection;
  **/
 public class CookieUtils {
 
+    public static final int COOKIE_AGE=10*60;
+
     public static void removeCookie(HttpServletRequest request, HttpServletResponse response, String cookieName){
         if(request.getCookies().length>0){
             for (Cookie cookie :request.getCookies()) {
@@ -30,6 +32,7 @@ public class CookieUtils {
     public static void addCookie(HttpServletResponse response, String cookieName,String cookieValue){
         Cookie cookie = new Cookie(cookieName, cookieValue);
         cookie.setPath("/");
+        cookie.setMaxAge(COOKIE_AGE);
         response.addCookie(cookie);
     }
 
