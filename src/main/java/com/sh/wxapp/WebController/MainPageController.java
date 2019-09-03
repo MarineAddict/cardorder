@@ -24,4 +24,14 @@ public class MainPageController {
         return "user/user_manage";
     }
 
+    @RequestMapping("/orderManagePage")
+    public String orderManagePage(){
+        return "order/order_manage";
+    }
+
+    @RequestMapping("/addOrderPage")
+    public String addOrderPage(){
+        return "order/add_order";
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.sh.wxapp.req.order;
 
 import com.sh.wxapp.req.PageableRequest;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import java.util.Date;
  * @author: xuqie
  * @create: 2019-03-14 21:51
  **/
+@Data
 public class LiveOrderListQueryReq extends PageableRequest {
     private String orderNo;
 
@@ -19,35 +21,4 @@ public class LiveOrderListQueryReq extends PageableRequest {
 
     private Date createEndDate;
 
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Integer getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(Integer orderType) {
-        this.orderType = orderType;
-    }
-
-    public Date getCreateStartDate() {
-        return createStartDate;
-    }
-
-    public void setCreateStartDate(Date createStartDate) {
-        this.createStartDate = createStartDate;
-    }
-
-    public Date getCreateEndDate() {
-        return createEndDate;
-    }
-
-    public void setCreateEndDate(Date createEndDate) {
-        this.createEndDate = createEndDate;
-    }
 }

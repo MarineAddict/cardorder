@@ -8,13 +8,16 @@ import com.sh.wxapp.dto.PageableDTO;
 import com.sh.wxapp.dto.order.OrderInfoDTO;
 import com.sh.wxapp.dto.order.OrderInsertUpdateDTO;
 import com.sh.wxapp.dto.order.LiveOrderListQueryDTO;
+import com.sh.wxapp.dto.order.OrderListQueryDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
+import com.sh.wxapp.enm.BusinessTypeEnum;
 import com.sh.wxapp.enm.OrderStatusEnum;
 import com.sh.wxapp.enm.PositionEnum;
 import com.sh.wxapp.exception.BusinessException;
 import com.sh.wxapp.mapper.OrderDetailInfoMapper;
 import com.sh.wxapp.mapper.OrderInfoMapper;
 import com.sh.wxapp.service.OrderService;
+import com.sh.wxapp.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,7 @@ public class OrderServiceImp implements OrderService {
     @Autowired
     private OrderDetailInfoMapper orderDetailInfoMapper;
 
+
     @Override
     @Transactional(rollbackFor = BusinessException.class)
     public void addOrders(List<OrderInsertUpdateDTO> orders, Long userId) {
@@ -52,6 +56,7 @@ public class OrderServiceImp implements OrderService {
         orders.forEach(orderInsertUpdateDTO -> {
             OrderInfo orderInfo = new OrderInfo();
             orderInfo.setStatus(OrderStatusEnum.ISSUED.getCode());
+            orderInfo.setCreateTime(new Date());
             BeanUtils.copyProperties(orderInsertUpdateDTO, orderInfo);
             orderInfo.setCreateId(userId);
             orderInfoMapper.insertSelective(orderInfo);
@@ -66,7 +71,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public void removeOrders(List<Long> orderIds) {
+    public void removeOrders(List<Long> orderIds, Long userId) {
         if(CollectionUtils.isEmpty(orderIds)){
             return;
         }
@@ -76,8 +81,8 @@ public class OrderServiceImp implements OrderService {
                     .ifPresent(orderInfo -> {
                         //如果已接单，无法取消;如果已完成，也无法取消
                         //发布情况下才删除
-                        if(OrderStatusEnum.ISSUED.getCode().equals(orderInfo.getStatus())){
-                            orderInfo.setStatus(OrderStatusEnum.CANCELED.getCode());
+                        if(!OrderStatusEnum.TAKEN.getCode().equals(orderInfo.getStatus())){
+                            orderInfo.setStatus(OrderStatusEnum.DELETED.getCode());
                             Long oldVersion=orderInfo.getVersion();
                             Long newVersion=oldVersion+1;
                             //加入版本号
@@ -152,7 +157,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public PageableDTO<List<OrderInfoDTO>> getIssuedOrders(Integer positionCode, LiveOrderListQueryDTO liveOrderListQueryDTO) {
+    public PageableDTO<OrderInfoDTO> getIssuedOrders(Integer positionCode, LiveOrderListQueryDTO liveOrderListQueryDTO) {
         if(positionCode ==null){
             return null;
         }
@@ -166,14 +171,50 @@ public class OrderServiceImp implements OrderService {
                     Optional.ofNullable(orderInfoMapper.selectIssuedOrder(liveOrderListQueryDTO))
                             .ifPresent(orderInfos -> {
                                 orderInfos.forEach(orderInfo -> {
+                                   Long orderId= orderInfo.getId();
                                     OrderInfoDTO orderInfoDTO=new OrderInfoDTO();
                                     BeanUtils.copyProperties(orderInfo,orderInfoDTO);
+                                    orderInfoDTO.setOrderTypeDisplay(BusinessTypeEnum.valueOf(orderInfoDTO.getOrderType()).getValue());
+                                    Optional.ofNullable(orderDetailInfoMapper.selectByOrderId(orderId)).ifPresent(orderDetailInfo -> {
+                                        orderInfoDTO.setDeparture(orderDetailInfo.getDeparture());
+                                        orderInfoDTO.setDestination(orderDetailInfo.getDestination());
+                                        orderInfoDTO.setTime(orderDetailInfo.getTime());
+                                    });
                                     list.add(orderInfoDTO);
                                 });
                             });
         });
         info.setList(list);
-        PageableDTO<List<OrderInfoDTO>> dto=new PageableDTO<>(info);
+        PageableDTO<OrderInfoDTO> dto=new PageableDTO<>(info);
+        return dto;
+    }
+
+    @Override
+    public PageableDTO<OrderInfoDTO> getOrderList(OrderListQueryDTO orderListQueryDTO) {
+        List<OrderInfoDTO> list=new ArrayList<>();
+        PageInfo<OrderInfoDTO> info=PageHelper.startPage(orderListQueryDTO.getPageNum(),orderListQueryDTO.getPageSize(),true)
+                .doSelectPageInfo(()->{
+                    Optional.ofNullable(orderInfoMapper.selectOrderList(orderListQueryDTO))
+                            .ifPresent(orderInfos -> {
+                                orderInfos.forEach(orderInfo -> {
+                                    OrderInfoDTO orderInfoDTO=new OrderInfoDTO();
+                                    BeanUtils.copyProperties(orderInfo,orderInfoDTO);
+                                    orderInfoDTO.setOrderTypeDisplay(BusinessTypeEnum.valueOf(orderInfo.getOrderType()).getValue());
+                                    orderInfoDTO.setStatusDisplay(OrderStatusEnum.getByCode(orderInfo.getStatus()).getValue());
+                                    //获取详情内容
+                                    Optional.ofNullable(orderDetailInfoMapper.selectByOrderId(orderInfo.getId())).ifPresent(orderDetailInfo -> {
+                                        orderInfoDTO.setDeparture(orderDetailInfo.getDeparture());
+                                        orderInfoDTO.setDestination(orderDetailInfo.getDestination());
+                                        orderInfoDTO.setFlightNo(orderDetailInfo.getFlightNo());
+                                        orderInfoDTO.setLuggageTotal(orderDetailInfo.getLuggageTotal());
+                                        orderInfoDTO.setPassengerTotal(orderDetailInfo.getPassengerTotal());
+                                    });
+                                    list.add(orderInfoDTO);
+                                });
+                            });
+                });
+        info.setList(list);
+        PageableDTO<OrderInfoDTO> dto=new PageableDTO<>(info);
         return dto;
     }
 

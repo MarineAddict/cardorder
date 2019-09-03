@@ -41,6 +41,7 @@ public class AccountController {
         CookieUtils.addCookie(response,"token",token);
         Map mp = new HashMap();
         mp.put("token", token);
+        mp.put("user",userInfoDTO);
         return JsonResponse.success("登陆成功", mp);
     }
 

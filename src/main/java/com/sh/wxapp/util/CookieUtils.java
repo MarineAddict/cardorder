@@ -18,12 +18,15 @@ public class CookieUtils {
     public static final int COOKIE_AGE=10*60;
 
     public static void removeCookie(HttpServletRequest request, HttpServletResponse response, String cookieName){
-        if(request.getCookies().length>0){
-            for (Cookie cookie :request.getCookies()) {
-                if(cookieName.equals(cookie.getName())){
-                    //删除
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
+        if(request.getCookies()!=null) {
+            //判空一次避免小程序
+            if (request.getCookies().length > 0) {
+                for (Cookie cookie : request.getCookies()) {
+                    if (cookieName.equals(cookie.getName())) {
+                        //删除
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                    }
                 }
             }
         }

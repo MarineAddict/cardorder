@@ -1,6 +1,6 @@
 package com.sh.wxapp.enm;
 
-public enum GenderEnum {
+public enum GenderEnum implements ConstantEnum{
     MALE(1,"男"),
     FEMAILE(2,"女");
 
@@ -17,17 +17,11 @@ public enum GenderEnum {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
 
     public static GenderEnum getByCode(Integer code){
         for(GenderEnum en:GenderEnum.values()){

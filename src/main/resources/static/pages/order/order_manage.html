@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/static/js/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/locale/bootstrap-table-zh-CN.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap-table.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}">
+</head>
+<body>
+<div style="text-align:right;padding: 20px 0px 10px 20px ;">
+    <button id="addOrder" type="button" class="btn btn-info">添加订单</button>
+</div>
+<div>
+    <table id="orderManageTable">
+    </table>
+</div>
+<script>
+     $(function () {
+         freshTable();
+         });
+
+     $("#addOrder").bind("click",function () {
+         var url="addOrderPage"
+         //在子菜单，所以调用parent级别的方法
+         parent.findTabAndActive("addOrderTab","添加订单",url)
+     })
+
+     function getOrderDetail(id){
+         //查询userDetail信息接口
+         console.log(id);
+     }
+
+     function deleteOrder(id){
+         //查询userDetail信息接口
+         console.log(id);
+         $.ajax({
+             type:'get',
+             url:'/order/removeOrder/'+id ,
+             success:function(response) {
+                 if(response.code=200){
+                     $('#orderManageTable').bootstrapTable('refresh',{'url':"/order/getOrderList"});
+                 }
+             }
+     })}
+
+     function freshTable(){
+         $('#orderManageTable').bootstrapTable({
+             url: '/order/getOrderList',         //请求后台的URL（*）
+             method: 'post',                      //请求方式（*）
+             // toolbar: '#toolbar',                //工具按钮用哪个容器
+             striped: true,                      //是否显示行间隔色
+             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+             pagination: true,                   //是否显示分页（*）
+             sortable: false,                     //是否启用排序
+             sortOrder: "asc",                   //排序方式
+             queryParams: "",//传递参数（*）
+             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+             pageNumber: 1,                       //初始化加载第一页，默认第一页
+             pageSize: 10,                       //每页的记录行数（*）
+             pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+             // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+             contentType: "application/json",
+             // strictSearch: true,
+             showColumns: false,                  //是否显示所有的列
+             // showRefresh: true,                  //是否显示刷新按钮
+             // minimumCountColumns: 2,             //最少允许的列数
+             clickToSelect: true,                //是否启用点击选中行
+             height: 700,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+             // uniqueId: "no",                     //每一行的唯一标识，一般为主键列
+             // showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+             // cardView: false,                    //是否显示详细视图
+             // detailView: false,                   //是否显示父子表
+             responseHandler: function(response){
+                 var result = {total:0,rows:[]};
+                 result.total=response.data.totalRecord;
+                 result.rows=response.data.list;
+                 return result;
+             },
+             columns: [
+                 {
+                     field: 'orderNo',
+                     title: '订单号'
+                 }, {
+                     field: 'orderTypeDisplay',
+                     title: '业务'
+                 }, {
+                     field: 'statusDisplay',
+                     title: '状态'
+                 },
+                 {
+                     field: 'departure',
+                     title: '出发地',
+                 },
+                 {
+                     field: 'destination',
+                     title: '目的地',
+                 },
+                 {
+                     field: 'orderTakerName',
+                     title: '接单人',
+                 },{
+                     field: 'price',
+                     title: '价格',
+                 },
+                 {
+                     title: '操作',
+                     formatter: function (value,row,index) {
+                         return '<a  onclick="getOrderDetail('+row.id+');">查看</a> '+'<a  onclick="deleteOrder('+row.id+');">删除</a> ';
+                     } //自定义方法，添加操作按钮
+                 },
+             ],
+             rowStyle: function (row, index) {
+                 var classesArr = ['success', 'info'];
+                 var strclass = "";
+                 if (index % 2 === 0) {//偶数行
+                     strclass = classesArr[0];
+                 } else {//奇数行
+                     strclass = classesArr[1];
+                 }
+                 return { classes: strclass };
+             },//隔行变色
+         });
+     }
+
+</script>
+</body>

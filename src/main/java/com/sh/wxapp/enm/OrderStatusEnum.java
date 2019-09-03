@@ -9,13 +9,14 @@ import com.sun.tools.corba.se.idl.constExpr.Or;
  * @author: xuqie
  * @create: 2019-03-04 17:04
  **/
-public enum OrderStatusEnum {
+public enum OrderStatusEnum implements ConstantEnum{
 
-    ISSUED(0, "已发布"),
+    ISSUED(0, "未接单"),
     TAKEN(1, "已接单"),
     FINISHED(2, "已完成"),
     CANCELED(4, "已取消"),
-    CHECKED_OUT(5,"已结账")
+    CHECKED_OUT(5,"已结账"),
+    DELETED(6,"已删除")
     ;
 
     private Integer code;

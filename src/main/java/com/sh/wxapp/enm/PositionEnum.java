@@ -3,7 +3,7 @@ package com.sh.wxapp.enm;
 import com.sh.wxapp.exception.BusinessException;
 
 /*身份*/
-public enum PositionEnum {
+public enum PositionEnum implements ConstantEnum{
 
     DRIVER(1,"司机"),
     MANAGER(2,"管理员"),

@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -17,12 +19,16 @@ import java.math.BigDecimal;
 public class OrderAddReq {
 
     @ApiModelProperty("订单号")
+    @NotEmpty(message = "订单号不能为空")
     private String orderNo;
     @ApiModelProperty("订单类型")
+    @NotNull(message = "订单类型必填")
     private Integer orderType;
     @ApiModelProperty("用车时间")
+    @NotEmpty(message = "用车时间不能为空")
     private String time;
     @ApiModelProperty("乘客姓名")
+    @NotEmpty(message = "乘客姓名不能为空")
     private String passengerName;
     @ApiModelProperty("乘客人数")
     private Integer passengerTotal;
@@ -39,5 +45,6 @@ public class OrderAddReq {
     @ApiModelProperty("乘客微信")
     private String passengerWechat;
     @ApiModelProperty("价格")
+    @NotNull(message = "价格不能为空")
     private BigDecimal price;
 }

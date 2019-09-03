@@ -8,6 +8,7 @@
     <script type="text/javascript" th:src="@{/static/js/jquery.form.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/js/bootstrap-closable-tab.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/main/CommonUtils.js}"></script>
 </head>
 <body>
 <!-- 左侧边栏 -->
@@ -44,10 +45,10 @@
     </div>
 </div>
 <script>
-    // $(function(){
-    //     var item = {'id':'1','name':'首页','url':'1111','closable':false};
-    //     closableTab.addTab(item);
-    // })
+    $(function(){
+        //调用option内容并储存到local storage
+       callOption();
+    })
 
     $('#orderManage').click(function () {
         //找到并激活orderManage
@@ -58,25 +59,12 @@
         var url="userManagePage"
         //找到并激活userManage
         findTabAndActive("userManageTab","人员管理",url)
-        // if($("#tab_container_userManageTab")){
-        //     var param={'userId':''};
-        //     $.ajax({
-        //         type:'post',
-        //         data:JSON.stringify(param),
-        //         dataType:'json',
-        //         url:'/user/userList' ,
-        //         contentType:'application/json',
-        //         success:function(response) {
-        //             console.log(JSON.parse(response));
-        //         }
-        //     })
-        // }
     });
 
-    var findTabAndActive = function (activeId,activeName,url) {
-        var item = {'id':activeId,'name':activeName,'url':url,'closable':true,'method':'post'};
-        closableTab.addTab(item);
-    };
+    // var findTabAndActive = function (activeId,activeName,url) {
+    //     var item = {'id':activeId,'name':activeName,'url':url,'closable':true,'method':'post'};
+    //     closableTab.addTab(item);
+    // };
 
 
 </script>

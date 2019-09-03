@@ -44,7 +44,7 @@ public class AccountServiceImp implements AccountService {
         }
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         AccountInfo accountInfo = null;
-        if ((accountInfo = accountInfoMapper.selectByUsernamePassWord(username, password)) != null) {
+        if ((accountInfo = accountInfoMapper.selectByUsernamePassWord(username.trim(), password.trim())) != null) {
             Optional.of(userInfoMapper.selectByUserId(accountInfo.getId()))
                     .ifPresent(userInfo -> {
                         BeanUtils.copyProperties(userInfo, userInfoDTO);

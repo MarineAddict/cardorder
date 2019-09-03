@@ -2,7 +2,7 @@
 <Configuration status="INFO">
     <Properties>
         <!-- 请将此处的'infra.test-elk'替换为当前系统的appid -->
-        <Property name="APP_ID" value="openservice.oyo-supplier-hotel"/>
+        <Property name="APP_ID" value="carorder"/>
         <Property name="LOG_PATH" value="/data/logs/${APP_ID}"/>
         <!--Property name="LOG_PATTERN"
                   value="%d{yyyy-MM-dd HH:mm:ss.SSS} %p %c [%t]: ${APP_ID} %msg %ex{separator(|)}%n"/-->

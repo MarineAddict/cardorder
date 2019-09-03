@@ -6,6 +6,9 @@ import com.sh.wxapp.dto.user.UserInfoDTO;
 import com.sh.wxapp.enm.BusinessExceptionCodeEnum;
 import com.sh.wxapp.jwt.TokenUtils;
 import com.sh.wxapp.rop.JsonResponse;
+import com.sh.wxapp.service.UserService;
+import com.sh.wxapp.util.SsoUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,9 +30,17 @@ import java.util.Map;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        boolean ifWechat=false;
+        //判断是否来自微信
+        String device=request.getHeader("device");
+        if(device!=null&&device.equals("wechat")){
+            ifWechat=true;
+        }
         response.setContentType("application/json;charset=utf-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -55,12 +66,20 @@ public class AuthInterceptor implements HandlerInterceptor {
             Map<String, Object> result = TokenUtils.parseToken(token);
             //token经过解析后得到分析结果为通过
             if (result.get(TokenUtils.RESULT).equals(TokenUtils.TOKEN_PASS)) {
+                result=(Map) result.get(TokenUtils.DATA);
+
                 //加入逻辑，需要查看session中是否有userInfo，没有说明当前的人员信息丢失，依然需要重新登陆
                 UserInfoDTO userInfoDTO = (UserInfoDTO)request.getSession().getAttribute("userInfo");
-                if(userInfoDTO==null){
-                    //人员为空信息，直接返回登陆
+                //H5逻辑
+                if(userInfoDTO==null&&ifWechat==false){
+                    //人员为空信息，直接返回登陆(但只有H5这样返回，微信不带cookie)
                     response.sendRedirect("/loginPage/index");
                     return false;
+                }else if(ifWechat&&userInfoDTO==null){
+                    //安插一个逻辑(添加user)
+                    Long userId= Long.valueOf(String.valueOf(result.get(TokenUtils.USERID)));
+                    userInfoDTO=userService.getUserInfo(userId);
+                    SsoUtil.set(userInfoDTO);
                 }
                 //通过,验证时间是否发新token
                 if (result.get(TokenUtils.EXPIRETIME) != null) {
@@ -72,22 +91,28 @@ public class AuthInterceptor implements HandlerInterceptor {
                         Object userId = result.get(TokenUtils.USERID);
                         Map map = new HashMap();
                         map.put(TokenUtils.USERID, userId);
+                        map.put(TokenUtils.EXPIRETIME, System.currentTimeMillis() + TokenUtils.TOKEN_VALID_TIME);
                         TokenUtils.createToken(map);
                         response.setHeader("token", token);
                     }
                 }
+
                 return true;
             } else {
                 //过期或者验证失败
-                response.sendRedirect("/loginPage/index");
                 JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
                 response.getWriter().write(JSONObject.toJSONString(jsonResponse));
+                if(!ifWechat) {
+                    //H5跳转
+                    response.sendRedirect("/loginPage/index");
+                }
                 return false;
             }
         } else {
             //无token
-            //1.查验身份
-            response.sendRedirect("/loginPage/index");
+            if(!ifWechat) {
+                response.sendRedirect("/loginPage/index");
+            }
             JsonResponse jsonResponse=JsonResponse.fail(BusinessExceptionCodeEnum.TOKEN_ERROR.getCode(),"验证失败");
             response.getWriter().write(JSONObject.toJSONString(jsonResponse));
             return false;

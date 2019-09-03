@@ -31,6 +31,26 @@ var closableTab = {
 
 			$('.nav-tabs').append(li_tab);
 			$('.tab-content').append(tabpanel);
+		}else {
+			//以下部分xq自行添加修改源码
+            var item={"tabclose":id};
+            closableTab.closeTab(item);
+
+            var li_tab = '<li role="presentation" class="" id="'+id+'"><a href="#'+container+'"  role="tab" data-toggle="tab" style="position: relative;padding:2px 20px 2px 15px">'+tabItem.name;
+            if(tabItem.closable){
+                li_tab = li_tab + '<i class="glyphicon glyphicon-remove small" tabclose="'+id+'" style="position: absolute;right:4px;top: 4px;"  onclick="closableTab.closeTab(this)"></i></a></li> ';
+            }else{
+                li_tab = li_tab + '</a></li>';
+            }
+
+            var tabpanel = '<div role="tabpanel" class="tab-pane" id="'+container+'" style="width: 100%; min-height: 100%">'+
+                // '<iframe src="'+tabItem.url+'" id="tab_frame_2" frameborder="0" style="overflow-x: hidden; overflow-y: hidden;width:100%;height: 100%"  onload="closableTab.frameLoad(this)"></iframe>'+
+                '<iframe src="'+tabItem.url+'" id="tab_frame_2" frameborder="0" style="overflow-x: hidden; overflow-y: hidden;width:100%;height: 100%"  onload="closableTab.frameLoad(this)"></iframe>'+
+                '</div>';
+
+
+            $('.nav-tabs').append(li_tab);
+            $('.tab-content').append(tabpanel);
 		}
 		$("#"+id).addClass("active");
 		$("#"+container).addClass("active");
@@ -42,8 +62,9 @@ var closableTab = {
 	closeTab:function(item){
 		var val = $(item).attr('tabclose');
 		var containerId = "tab_container_"+val.substring(9);
-   	    
-   	    if($('#'+containerId).hasClass('active')){
+		console.log(containerId);
+        if($('#'+containerId).hasClass('active')){
+   	    	console.log("find");
    	    	$('#'+val).prev().addClass('active');
    	    	$('#'+containerId).prev().addClass('active');
    	    }

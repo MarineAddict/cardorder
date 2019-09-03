@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.sh.wxapp.domain.UserInfo;
 import com.sh.wxapp.dto.PageableDTO;
+import com.sh.wxapp.dto.user.UserInfoDTO;
 import com.sh.wxapp.dto.user.UserListDTO;
 import com.sh.wxapp.dto.user.UserListQueryDTO;
 import com.sh.wxapp.enm.GenderEnum;
@@ -31,18 +33,18 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-private UserInfoMapper userInfoMapper;
+    private UserInfoMapper userInfoMapper;
 
     @Override
     public PageableDTO<UserListDTO> getUserList(UserListQueryDTO queryDTO) {
         log.info("getUserList--query:{}", JSONObject.toJSONString(queryDTO));
-        List<UserListDTO> list= Lists.newArrayList();
-        PageInfo<UserListDTO> info=PageHelper.startPage(queryDTO.getPageNum(),queryDTO.getPageSize(),true).doSelectPageInfo(()->{
+        List<UserListDTO> list = Lists.newArrayList();
+        PageInfo<UserListDTO> info = PageHelper.startPage(queryDTO.getPageNum(), queryDTO.getPageSize(), true).doSelectPageInfo(() -> {
             Optional.ofNullable(userInfoMapper.getUserList(queryDTO))
                     .ifPresent(userInfos -> {
                         userInfos.forEach(userInfo -> {
-                            UserListDTO userListDTO=new UserListDTO();
-                            BeanUtils.copyProperties(userInfo,userListDTO);
+                            UserListDTO userListDTO = new UserListDTO();
+                            BeanUtils.copyProperties(userInfo, userListDTO);
                             userListDTO.setPositionName(PositionEnum.getPositionByCode(userInfo.getPosition()).getValue());
                             userListDTO.setGenderDesc(GenderEnum.getByCode(userInfo.getGender()).getValue());
                             list.add(userListDTO);
@@ -50,7 +52,21 @@ private UserInfoMapper userInfoMapper;
                     });
         });
         info.setList(list);
-        PageableDTO<UserListDTO> dto=new PageableDTO<>(info);
+        PageableDTO<UserListDTO> dto = new PageableDTO<>(info);
         return dto;
+    }
+
+    @Override
+    public UserInfoDTO getUserInfo(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        UserInfo userInfo = userInfoMapper.selectByUserId(userId);
+        if(userInfo!=null){
+            UserInfoDTO userInfoDTO=new UserInfoDTO();
+            BeanUtils.copyProperties(userInfo,userInfoDTO);
+            return userInfoDTO;
+        }
+        return null;
     }
 }

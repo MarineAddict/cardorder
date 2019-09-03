@@ -58,6 +58,7 @@
          data:$("#form").serializeArray(),
          contentType:'application/x-www-form-urlencoded',
          success:function(response) {
+             console.log(response);
              if (JSON.parse(response).data != null) {
                  var token = JSON.parse(response).data.token;
                  if (token != null) {

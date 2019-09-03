@@ -8,7 +8,7 @@ import com.sh.wxapp.exception.BusinessException;
  * @author: xuqie
  * @create: 2019-02-27 18:58
  **/
-public enum CarTypeEnum {
+public enum CarTypeEnum implements ConstantEnum{
 
     ECONOMIC(1, "经济型"),
 

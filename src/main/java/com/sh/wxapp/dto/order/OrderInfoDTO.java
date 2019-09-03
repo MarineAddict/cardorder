@@ -22,10 +22,16 @@ public class OrderInfoDTO {
     @JsonIgnore
     @ApiModelProperty("订单类型")
     private Integer orderType;
-
     @ApiModelProperty("订单类型")
     private String orderTypeDisplay;
-
+    @ApiModelProperty("订单状态")
+    private Integer status;
+    @ApiModelProperty("订单状态")
+    private String statusDisplay;
+    @ApiModelProperty("接单人")
+    private Long orderTaker;
+    @ApiModelProperty("接单人名称")
+    private String orderTakerName;
     @ApiModelProperty("用车时间")
     private String time;
     @ApiModelProperty("乘客姓名")
@@ -46,5 +52,9 @@ public class OrderInfoDTO {
     private String passengerWechat;
     @ApiModelProperty("价格")
     private BigDecimal price;
+    @ApiModelProperty("创建人姓名")
+    private Long createId;
+    @ApiModelProperty("创建人姓名")
+    private String createName;
 
 }

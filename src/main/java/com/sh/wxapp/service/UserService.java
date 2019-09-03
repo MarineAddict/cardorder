@@ -1,6 +1,7 @@
 package com.sh.wxapp.service;
 
 import com.sh.wxapp.dto.PageableDTO;
+import com.sh.wxapp.dto.user.UserInfoDTO;
 import com.sh.wxapp.dto.user.UserListDTO;
 import com.sh.wxapp.dto.user.UserListQueryDTO;
 
@@ -14,5 +15,7 @@ import com.sh.wxapp.dto.user.UserListQueryDTO;
 public interface UserService {
 
     PageableDTO<UserListDTO> getUserList(UserListQueryDTO queryDTO);
+
+    UserInfoDTO getUserInfo(Long userId);
 
 }
